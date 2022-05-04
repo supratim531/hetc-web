@@ -1,0 +1,54 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+	<div class="container-fluid">
+		<a class="navbar-brand" style="color: white;">HETC</a>
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+		aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+				<li class="nav-item">
+					<a class="nav-link active" aria-current="page" href="/">Home</a>
+				</li>
+				{% if request.user.is_superuser %}
+					<li class="nav-item">
+						<a class="nav-link" href="/teacher/student-records">Student Record</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="/teacher/set-exam-schedule">Set Schedule</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="/teacher/set-exam-questions">Set Questions</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="/admin">Admin Panel</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="/logout">Logout</a>
+					</li>
+				{% else %}
+					<li class="nav-item">
+						<a class="nav-link" href="/contact">Contact Us</a>
+					</li>
+					{% if request.user.is_anonymous %}
+						{% if not dictt.date_over and not dictt.ahead_of_time %}
+							<li class="nav-item">
+								<a class="nav-link" href="/register">Register</a>
+							</li>
+						{% endif %}
+						<li class="nav-item">
+							<a class="nav-link" href="/login">Login</a>
+						</li>
+					{% else %}
+						<li class="nav-item">
+							<a class="nav-link" href="/exam-credential">Exam</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="/logout">Logout</a>
+						</li>
+					{% endif %}
+				{% endif %}
+			</ul>
+		</div>
+	</div>
+</nav>
