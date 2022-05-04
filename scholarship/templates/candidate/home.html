@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %} Home {% endblock title %}
+
+{% block body %}
+
+<div class="main">
+	<div class="submain">
+		<h1 class="text-center">Welcome To <span id="change" class="change"></span></h1>
+		<div class="logo my-3"></div>
+		<h2 class="text-center my-2">Hooghly Engineering and Technology College</h2>
+		<h3 class="text-center my-1">HETC Scholarship Test</h3>
+		{% if request.user.is_anonymous %}
+			{% if not dictt.date_over %}
+				<h5 class="text-center my-1">Registration will be opened from {{ dictt.start_date }} upto {{ dictt.last_date }}</h5>
+			{% else %}
+				<h5 class="text-center my-1">Registration Closed</h5>
+			{% endif %}
+		{% else %}
+			<h5 class="text-center my-1">Welcome {{request.user.first_name}} {{request.user.last_name}}</h5>
+		{% endif %}
+	</div>
+</div>
+
+<script>
+	let ct = "";
+	let count = 0;
+	let index = 0;
+	let letter = "";
+	let word = ["HETC"];
+	(function type() {
+		if (count === word.length) count = 0;
+		ct = word[count];
+		letter = ct.slice(0, ++index);
+		document.querySelector(".change").textContent = letter;
+		if (letter.length === ct.length) {
+			count++;
+			index = 0;
+		}
+		setTimeout(type, 800);
+	})();
+</script>
+
+{% endblock body %}
