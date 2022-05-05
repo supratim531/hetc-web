@@ -110,3 +110,29 @@ def handle_upload_file(file):
     with open(f'./media/{file.name}', "wb+") as fPtr:
         for chunk in file.chunks():
             fPtr.write(chunk)
+
+def add_days(days):
+    tdelta = datetime.timedelta(days=days)
+    return tdelta
+
+def init_schedule(Details):
+    try:
+        if Details.objects.count() == 0:
+            reg_start_date = datetime.date.today() + add_days(1)
+            reg_last_date = datetime.date.today() + add_days(15)
+            exam_date = datetime.date.today() + add_days(20)
+            exam_start = datetime.time(10, 30, 0)
+            exam_end = datetime.time(11, 30, 0)
+
+            ob = Details(total_questions=0, registration_start_date=reg_start_date,
+            registration_last_date=reg_last_date, exam_start_date=exam_date, exam_start_time=exam_start,
+            exam_end_time=exam_end)
+            ob.save()
+
+            print("supratim531: Exam Schedule Initialized\n")
+        
+        else:
+            print("supratim531: Exam Schedule already exists\n")
+    
+    except:
+        print("supratim531: Detail model does not exist\n")

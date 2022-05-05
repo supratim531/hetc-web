@@ -14,11 +14,6 @@ from scholarship.helper import eliminate, handle_upload_file
 def set_question(request):
     if not request.user.is_superuser:
         return redirect('home')
-    
-    obj = Question.objects.last()
-    field_object = Question._meta.get_field('ques_no')
-    field_value = field_object.value_from_object(obj)
-    print(field_value, type(field_value))
 
     if request.method == 'POST':
         obj = Question.objects.last()
@@ -63,8 +58,14 @@ def set_question(request):
 
         messages.success(request, 'One question successfully added')
 
+    try:
+        total_ques = Question.objects.count()
+
+    except:
+        total_ques = 0
+
     dictt = {
-        "total": Question.objects.count()
+        "total": total_ques
     }
 
     return render(request, 'teacher/question.html', {'dictt': dictt})
@@ -74,31 +75,66 @@ def set_schedule(request):
         return redirect('home')
 
     if request.method == 'POST':
-        ques_no = int(request.POST.get('quesno'))
+        ques_no = str(request.POST.get('quesno'))
+        if ques_no != '':
+            ques_no = int(request.POST.get('quesno'))
+            Detail.objects.update(total_questions=ques_no)
+
         exam_end = str(request.POST.get('examend'))
-        exam_date = str(request.POST.get('examdate'))
+        if exam_end != '':
+            exam_end = datetime.datetime.strptime(exam_end, '%H:%M').time()
+            Detail.objects.update(exam_end_time=exam_end)
+
         exam_start = str(request.POST.get('examstart'))
+        if exam_start != '':
+            exam_start = datetime.datetime.strptime(exam_start, '%H:%M').time()
+            Detail.objects.update(exam_start_time=exam_start)
+
+        exam_date = str(request.POST.get('examdate'))
+        if exam_date != '':
+            exam_date = datetime.datetime.strptime(exam_date, '%Y-%m-%d').date()
+            Detail.objects.update(exam_start_date=exam_date)
+
         reg_last_date = str(request.POST.get('reglastdate'))
+        if reg_last_date != '':
+            reg_last_date = datetime.datetime.strptime(reg_last_date, '%Y-%m-%d').date()
+            Detail.objects.update(registration_last_date=reg_last_date)
+
         reg_start_date = str(request.POST.get('regstartdate'))
+        if reg_start_date != '':
+            reg_start_date = datetime.datetime.strptime(reg_start_date, '%Y-%m-%d').date()
+            Detail.objects.update(registration_start_date=reg_start_date)
 
-        handle_upload_file(request.FILES['pdf'])
-        exam_end = datetime.datetime.strptime(exam_end, '%H:%M').time()
-        exam_start = datetime.datetime.strptime(exam_start, '%H:%M').time()
-        exam_date = datetime.datetime.strptime(exam_date, '%Y-%m-%d').date()
-        reg_last_date = datetime.datetime.strptime(reg_last_date, '%Y-%m-%d').date()
-        reg_start_date = datetime.datetime.strptime(reg_start_date, '%Y-%m-%d').date()
+        try:
+            handle_upload_file(request.FILES['pdf'])
+        except:
+            pass
 
-        print(ques_no, type(ques_no))
-        print(reg_start_date, type(reg_start_date))
-        print(reg_last_date, type(reg_last_date))
-        print(exam_date, type(exam_date))
-        print(exam_start, type(exam_start))
-        print(exam_end, type(exam_end))
-        print(request.FILES['pdf'], type(request.FILES['pdf']))
+        # ques_no = int(request.POST.get('quesno'))
+        # exam_end = str(request.POST.get('examend'))
+        # exam_date = str(request.POST.get('examdate'))
+        # exam_start = str(request.POST.get('examstart'))
+        # reg_last_date = str(request.POST.get('reglastdate'))
+        # reg_start_date = str(request.POST.get('regstartdate'))
 
-        Detail.objects.update(total_questions=ques_no, registration_start_date=reg_start_date,
-        registration_last_date=reg_last_date, exam_start_date=exam_date, exam_start_time=exam_start,
-        exam_end_time=exam_end)
+        # handle_upload_file(request.FILES['pdf'])
+        # exam_end = datetime.datetime.strptime(exam_end, '%H:%M').time()
+        # exam_start = datetime.datetime.strptime(exam_start, '%H:%M').time()
+        # exam_date = datetime.datetime.strptime(exam_date, '%Y-%m-%d').date()
+        # reg_last_date = datetime.datetime.strptime(reg_last_date, '%Y-%m-%d').date()
+        # reg_start_date = datetime.datetime.strptime(reg_start_date, '%Y-%m-%d').date()
+
+        # print(ques_no, type(ques_no))
+        # print(reg_start_date, type(reg_start_date))
+        # print(reg_last_date, type(reg_last_date))
+        # print(exam_date, type(exam_date))
+        # print(exam_start, type(exam_start))
+        # print(exam_end, type(exam_end))
+        # print(request.FILES['pdf'], type(request.FILES['pdf']))
+
+        # Detail.objects.update(total_questions=ques_no, registration_start_date=reg_start_date,
+        # registration_last_date=reg_last_date, exam_start_date=exam_date, exam_start_time=exam_start,
+        # exam_end_time=exam_end)
 
         messages.success(request, 'Exam Schedule Successfully Updated')
 
