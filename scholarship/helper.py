@@ -119,10 +119,10 @@ def init_schedule(Details):
     try:
         if Details.objects.count() == 0:
             reg_start_date = datetime.date.today() + add_days(1)
-            reg_last_date = datetime.date.today() + add_days(15)
-            exam_date = datetime.date.today() + add_days(20)
-            exam_start = datetime.time(10, 30, 0)
-            exam_end = datetime.time(11, 30, 0)
+            reg_last_date = datetime.date.today() + add_days(22)
+            exam_date = datetime.date.today() + add_days(24)
+            exam_start = datetime.time(11, 00, 0)
+            exam_end = datetime.time(12, 00, 0)
 
             ob = Details(total_questions=0, registration_start_date=reg_start_date,
             registration_last_date=reg_last_date, exam_start_date=exam_date, exam_start_time=exam_start,
