@@ -15,7 +15,7 @@ from .models import *
 from .helper import timer, is_exam, user_id, hashed2, verified, eliminate, last_seen, date_over, time_ahead, user_password, is_exam_running, record_is_duplicate
 
 def home(request):
-    date_ob = Detail.objects.get(pk=1)
+    date_ob = Detail.objects.first()
     last_date = date_ob.registration_last_date.strftime("%d-%B-%Y")
     start_date = date_ob.registration_start_date.strftime("%d-%B-%Y")
 
@@ -182,7 +182,7 @@ def exam(request, userid):
                 field_object = Detail._meta.get_field(field_name)
                 total_questions = getattr(obj, field_object.attname)
 
-                date_ob = Detail.objects.get(pk=1)
+                date_ob = Detail.objects.first()
                 start_time = str(date_ob.exam_start_time)
                 start_date = date_ob.exam_start_date.strftime("%B %d, %Y")
                 rem_days = str((date_ob.exam_start_date - datetime.date.today()).days) + " days"
@@ -205,7 +205,7 @@ def exam(request, userid):
                 return render(request, 'candidate/exam_auth.html')
 
         else:
-            messages.warning(request, f'{user.first_name} {user.last_name} Time of your examination is over')
+            messages.warning(request, f'{user.first_name} {user.last_name} Time of your examination is over (not attended)')
             return render(request, 'candidate/exam_auth.html')
 
     elif request.method == 'POST':

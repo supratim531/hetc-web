@@ -30,7 +30,7 @@ def eliminate(digit):
     return int(digit.replace('0', '')) if str(digit) in one_digit else int(digit)
 
 def is_exam(Details):
-    ob = Details.objects.get(pk=1)
+    ob = Details.objects.first()
 
     if datetime.date.today() < ob.exam_start_date:
         return False
@@ -61,7 +61,7 @@ def last_seen():
     return str(c_hour) + ':' + str(c_minute)
 
 def is_exam_running(Details):
-    ob = Details.objects.get(pk=1)
+    ob = Details.objects.first()
 
     if datetime.date.today() == ob.exam_start_date:
         if datetime.datetime.now().time() > ob.exam_end_time:
@@ -73,7 +73,7 @@ def is_exam_running(Details):
     return True
 
 def date_over(Details):
-    ob = Details.objects.get(pk=1)
+    ob = Details.objects.first()
 
     if datetime.date.today() <= ob.registration_last_date:
         return False
@@ -82,7 +82,7 @@ def date_over(Details):
         return True
 
 def time_ahead(Details):
-    ob = Details.objects.get(pk=1)
+    ob = Details.objects.first()
 
     if datetime.date.today() < ob.registration_start_date:
         return True
@@ -101,7 +101,7 @@ def record_is_duplicate(fname, lname, gurdian, email):
     return False
 
 def timer(Details):
-    ob = Details.objects.get(pk=1)
+    ob = Details.objects.first()
     end_time = datetime.datetime.combine(datetime.date(1, 1, 1), ob.exam_end_time)
     curr_time = datetime.datetime.combine(datetime.date(1, 1, 1), datetime.datetime.now().time())
     return (end_time - curr_time).seconds
