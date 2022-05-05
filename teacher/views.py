@@ -16,9 +16,15 @@ def set_question(request):
         return redirect('home')
 
     if request.method == 'POST':
-        obj = Question.objects.last()
-        field_object = Question._meta.get_field('ques_no')
-        field_value = field_object.value_from_object(obj)
+        field_value = 0
+
+        try:
+            obj = Question.objects.last()
+            field_object = Question._meta.get_field('ques_no')
+            field_value = field_object.value_from_object(obj)
+
+        except:
+            pass
 
         ques_no = eliminate(request.POST.get('quesno'))
         ques = request.POST.get('ques')
