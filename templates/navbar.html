@@ -14,20 +14,20 @@
 						<a class="nav-link" href="/teacher/student-records">Student Record</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="/teacher/set-exam-schedule">Set Schedule</a>
+						<a class="nav-link" href="/teacher/set-exam-schedule">Update Schedule</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" href="/teacher/set-exam-questions">Set Questions</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="/admin">Admin Panel</a>
+						<a class="nav-link" href="/admin" target="_blank">Admin Panel</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" href="/logout">Logout</a>
 					</li>
 				{% else %}
 					<li class="nav-item">
-						<a class="nav-link" aria-current="page" href="/media/rules.pdf">Rules</a>
+						<a class="nav-link" aria-current="page" href="/media/Guidelines.pdf" target="_blank">Exam Guidelines</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" href="/contact">Contact Us</a>
@@ -42,9 +42,15 @@
 							<a class="nav-link" href="/login">Login</a>
 						</li>
 					{% else %}
-						<li class="nav-item">
-							<a class="nav-link" href="/exam-credential">Exam</a>
-						</li>
+						{% if request.user.is_superuser or not request.user.is_superuser %}
+							<li class="nav-item">
+								<a class="nav-link" href="/exam-credential" target="_blank">Exam Link</a>
+							</li>
+						{% else %}
+							<li class="nav-item">
+								<a class="nav-link" href="/server-maintenance" target="_blank">Exam Link</a>
+							</li>
+						{% endif %}
 						<li class="nav-item">
 							<a class="nav-link" href="/logout">Logout</a>
 						</li>

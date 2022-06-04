@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 import os
+import django_heroku
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -139,6 +140,9 @@ else:
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_PASSWORD = 'huiifbuwxwijypgp'
-EMAIL_HOST_USER = 'utsavpokemon9000chatterjee@gmail.com'
+EMAIL_HOST_PASSWORD = 'yjoeextydccbxidc'
+EMAIL_HOST_USER = 'supratimm531@gmail.com'
 EMAIL_BACKEND ='django.core.mail.backends.smtp.EmailBackend'
+
+# Activate Django-Heroku.
+django_heroku.settings(locals())

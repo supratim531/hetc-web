@@ -1,3 +1,4 @@
+import datetime
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -12,31 +13,34 @@ class Detail(models.Model):
 
 
 class Student(models.Model):
-    first_name = models.CharField(max_length=100, blank=True, null=True)
-    last_name = models.CharField(max_length=100, blank=True, null=True)
+    author = models.ForeignKey(User, default=None, on_delete=models.CASCADE)
     user_id = models.CharField(max_length=100, blank=True, null=True)
+    full_name = models.CharField(max_length=200, blank=True, null=True)
+    gurdian_name = models.CharField(max_length=200, blank=True, null=True)
     date_of_birth = models.CharField(max_length=50, blank=True, null=True)
-    gurdian_name = models.CharField(max_length=100, blank=True, null=True)
     contact = models.CharField(max_length=11, blank=True, null=True)
     whatsapp = models.CharField(max_length=11, blank=True, null=True)
-    email = models.CharField(max_length=100, blank=True, null=True)
-    address = models.CharField(max_length=100, blank=True, null=True)
-    school_college_name = models.CharField(max_length=50, blank=True, null=True)
-    appearing_passed_12 = models.CharField(max_length=50, blank=True, null=True)
-    board_name = models.CharField(max_length=10, blank=True, null=True)
+    email = models.CharField(max_length=200, blank=True, null=True)
+    address = models.CharField(max_length=1000, blank=True, null=True)
+    school_college_name = models.CharField(max_length=1000, blank=True, null=True)
+    passing_year_12 = models.CharField(max_length=50, blank=True, null=True)
+    gender = models.CharField(max_length=10, blank=True, null=True)
+    pure_science_combo = models.CharField(max_length=10, blank=True, null=True)
+    board_name = models.CharField(max_length=50, blank=True, null=True)
     appeared_wbjee_jeeMain = models.CharField(null=True, blank=True, max_length=10)
-    created_at = models.DateField()
-    last_seen = models.CharField(max_length=20, blank=True, null=True)
+    preferred_stream = models.CharField(max_length=300, null=True, blank=True)
+    created_at = models.DateTimeField(default=datetime.datetime.now())
+    last_seen = models.CharField(max_length=10, blank=True, null=True, default='00:00')
     exam_status = models.BooleanField(default=False)
     student_feedback = models.CharField(max_length=50, blank=True, null=True)
 
     def __str__(self):
-        return str(self.first_name) + '-' + str(self.last_name) + '-' + str(self.user_id)
+        return str(self.full_name).replace(' ', '-') + '-' + str(self.user_id)
 
 
 class Question(models.Model):
     ques_no = models.IntegerField(primary_key=True)
-    ques = models.CharField(max_length=1000)
+    ques = models.TextField()
     opt1 = models.CharField(max_length=1000)
     opt2 = models.CharField(max_length=1000)
     opt3 = models.CharField(max_length=1000)
@@ -44,9 +48,12 @@ class Question(models.Model):
     opt_ans = models.CharField(max_length=10)
     neg_marks = models.IntegerField(default=0)
     pos_marks = models.PositiveIntegerField(default=0)
+    ques_type = models.CharField(null=True, blank=True, max_length=1000)
+    image_name = models.CharField(null=True, blank=True, max_length=1000)
 
     def __str__(self):
-        return f"{self.ques_no}-" + str(self.ques).replace(' ', '_')
+        if self.ques == '': return f"{self.ques_no}-" + str(self.image_name)
+        else: return f"{self.ques_no}-" + str(self.ques).replace(' ', '_')
 
 
 class Result(models.Model):

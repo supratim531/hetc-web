@@ -12,45 +12,107 @@
    </div>
    {% endfor %}
    <h2 class="text-center my-3">Total Questions Added - {{ dictt.total }}</h2>
-   <form action="" method="POST">
+   <form action="" method="POST" enctype="multipart/form-data">
       {% csrf_token %}
       <div class="mb-3">
-         <label for="name" class="form-label">Question Number</label>
-         <input type="number" class="form-control" id="fname" name="quesno" placeholder="Question Number"
-            required="required">
+			<label for="questype" class="form-label">Select Question Type</label>
+			<select name="questype" id="questype" name="questype" onchange="changeFunc(value);">
+				<option value="Normal">Normal (default)</option>
+				<option value="Boolean">True / False</option>
+				<option value="Image">Image</option>
+			</select>
       </div>
-      <div class="mb-3">
-         <label for="name" class="form-label">Question Body</label>
-         <input type="text" class="form-control" id="fname" name="ques" placeholder="Question Body"
-            required="required">
+      <div id="quesimg" class="mb-3" style="display: none;">
+         <label for="image" class="form-label">Set Question Through Image</label>
+         <input class="form-control" type="file" id="image" name="image">
       </div>
-      <div class="mb-3">
+      <div id="quesnormal" class="mb-3">
+         <label for="quesbody" class="form-label">Question Body</label>
+         <textarea class="form-control" id="quesbody" name="ques" rows="5" cols="5"
+         placeholder="Add Question Here" required></textarea>
+      </div>
+      <div id="quesbool" class="mb-3" style="display: none;">
+         <div class="form-check">
+            <input class="form-check-input" type="radio" name="boolans" value="a" id="flexRadioDefault1">
+            <label class="form-check-label" for="flexRadioDefault1">True</label>
+         </div>
+         <div class="form-check">
+            <input class="form-check-input" type="radio" name="boolans" value="b" id="flexRadioDefault2">
+            <label class="form-check-label" for="flexRadioDefault2">False</label>
+         </div>
+      </div>
+      <div class="mb-3 quesopt">
          <label for="name" class="form-label">Option a</label>
-         <input type="text" class="form-control" id="fname" name="opta" placeholder="Option a" required="required">
+         <input type="text" class="form-control" id="fname" name="opta" placeholder="Option a">
       </div>
-      <div class="mb-3">
+      <div class="mb-3 quesopt">
          <label for="name" class="form-label">Option b</label>
-         <input type="text" class="form-control" id="fname" name="optb" placeholder="Option b" required="required">
+         <input type="text" class="form-control" id="fname" name="optb" placeholder="Option b">
       </div>
-      <div class="mb-3">
+      <div class="mb-3 quesopt">
          <label for="name" class="form-label">Option c</label>
-         <input type="text" class="form-control" id="fname" name="optc" placeholder="Option c" required="required">
+         <input type="text" class="form-control" id="fname" name="optc" placeholder="Option c">
       </div>
-      <div class="mb-3">
+      <div class="mb-3 quesopt">
          <label for="name" class="form-label">Option d</label>
-         <input type="text" class="form-control" id="fname" name="optd" placeholder="Option d" required="required">
+         <input type="text" class="form-control" id="fname" name="optd" placeholder="Option d">
       </div>
-      <div class="mb-3">
+      <div class="mb-3 quesopt">
          <label for="name" class="form-label">Correct Option (option: a / b / c / d)</label>
-         <input type="text" class="form-control" id="fname" name="correct" placeholder="Option a, b, c or d"
-            required="required">
+         <input type="text" class="form-control" id="correct" name="correct" placeholder="Option a, b, c or d" required>
       </div>
       <div class="mb-3">
-         <label for="name" class="form-label">Marks</label>
-         <input type="number" class="form-control" id="fname" name="marks" placeholder="Marks" required="required">
+         <label for="marks" class="form-label">Marks</label>
+         <input type="number" class="form-control" id="marks" name="marks" placeholder="Marks" required>
       </div>
       <button type="submit" class="btn btn-primary" value="register">Submit</button>
+      <button type="reset" id="hidebutton" class="btn btn-primary float-end" value="clear">Reset</button>
    </form>
 </div>
+
+<script>
+	function changeFunc(value) {
+		if (value == "Image") {
+         // document.getElementById("hidebutton").click();
+			document.getElementById("quesimg").style.display = "block";
+         document.getElementById("quesbool").style.display = "none";
+			document.getElementById("quesnormal").style.display = "none";
+			document.getElementById("image").setAttribute("required", "");
+         document.getElementById("correct").setAttribute("required", "");
+         document.getElementById("quesbody").removeAttribute("required");
+         document.getElementsByClassName("quesopt")[0].style.display = "block";
+         document.getElementsByClassName("quesopt")[1].style.display = "block";
+         document.getElementsByClassName("quesopt")[2].style.display = "block";
+         document.getElementsByClassName("quesopt")[3].style.display = "block";
+         document.getElementsByClassName("quesopt")[4].style.display = "block";
+		} else if (value == "Normal") {
+         // document.getElementById("hidebutton").click();
+         document.getElementById("quesimg").style.display = "none";
+         document.getElementById("quesbool").style.display = "none";
+         document.getElementById("image").removeAttribute("required");
+			document.getElementById("quesnormal").style.display = "block";
+         document.getElementById("correct").setAttribute("required", "");
+         document.getElementById("quesbody").setAttribute("required", "");
+         document.getElementsByClassName("quesopt")[0].style.display = "block";
+         document.getElementsByClassName("quesopt")[1].style.display = "block";
+         document.getElementsByClassName("quesopt")[2].style.display = "block";
+         document.getElementsByClassName("quesopt")[3].style.display = "block";
+         document.getElementsByClassName("quesopt")[4].style.display = "block";
+		} else if (value == "Boolean") {
+         // document.getElementById("hidebutton").click();
+         document.getElementById("quesimg").style.display = "none";
+			document.getElementById("quesbool").style.display = "block";
+         document.getElementById("image").removeAttribute("required");
+         document.getElementById("quesnormal").style.display = "block";
+         document.getElementById("correct").removeAttribute("required");
+         document.getElementById("quesbody").setAttribute("required", "");
+         document.getElementsByClassName("quesopt")[0].style.display = "none";
+         document.getElementsByClassName("quesopt")[1].style.display = "none";
+         document.getElementsByClassName("quesopt")[2].style.display = "none";
+         document.getElementsByClassName("quesopt")[3].style.display = "none";
+         document.getElementsByClassName("quesopt")[4].style.display = "none";
+      }
+	}
+</script>
 
 {% endblock body %}

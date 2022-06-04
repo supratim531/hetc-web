@@ -47,6 +47,11 @@
    align-items: center;
 }
 
+.img {
+   width: 1000px;
+   height: 230px;
+}
+
 @media only screen and (min-width: 881px) {
    .buttonss {
       justify-content: center;
@@ -105,4 +110,136 @@
 
 span {
    font-weight: bold
+}
+
+@media (max-width: 280px) {
+   .img {
+      width: 145px;
+      height: 85px;
+   }
+}
+
+@media (max-width: 480px) {
+   .img {
+      width: 300px;
+      height: 125px;
+   }
+}
+
+@media (min-width: 480px) and (max-width: 780px) {
+   .img {
+      width: 460px;
+      height: 190px;
+   }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+   .img {
+      width: 700px;
+      height: 170px;
+   }
+}
+
+@media (min-width: 1024px) and (max-width: 1300px) {
+   .img {
+      width: 800px;
+      height: 290px;
+   }
+}
+
+.cont {
+   display: flex;
+   flex-direction: column;
+   align-items: flex-start;
+   justify-content: center;
+   position: absolute;
+   left: 50%;
+   top: 50%;
+   transform: translate(-50%, -50%);
+   height: auto;
+   margin-top: 150px;
+}
+
+.sssss {
+   margin-top: 60px;
+}
+
+.col1 {
+   height: 25px;
+   width: 25px;
+   background-color: red;
+}
+
+.col2 {
+   height: 25px;
+   width: 25px;
+   background-color: green;
+   margin-top: 25px;
+}
+
+.col3 {
+   height: 25px;
+   width: 25px;
+   background-color: blue;
+   margin-top: 25px;
+}
+
+.one {
+   height: auto;
+   width: auto;
+   margin-top: 25px;
+   display: flex;
+   justify-content: flex-start;
+   align-items: center;
+}
+
+.two {
+   height: auto;
+   width: auto;
+   margin-top: 25px;
+   display: flex;
+   justify-content: flex-start;
+   align-items: center;
+}
+
+.three {
+   height: auto;
+   width: auto;
+   margin-top: 25px;
+   display: flex;
+   justify-content: flex-start;
+   align-items: center;
+}
+
+.word1 {
+   margin-left: 10px;
+   margin-top: 20px;
+}
+
+.word2 {
+   margin-left: 10px;
+   margin-top: 20px;
+}
+
+.word {
+   margin-left: 10px;
+}
+
+.dt {
+   margin-top: 60px;
+}
+
+@media (min-width: 1024px) and (max-width: 2000px) {
+   .cont {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      height: auto;
+      margin-top: 90px;
+   }
 }

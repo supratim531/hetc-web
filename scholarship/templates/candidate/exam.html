@@ -27,12 +27,34 @@
       </div>
    </div>
 
+   <!-- Starter Information -->
+   <div class="container cont" id="colourCodes">
+      <h4 class="text-center dtt">Follow the colour codes carefully</h4>
+      <div class="container sssss">
+         <div class="one">
+            <div class="col1"></div>
+            <h6 class="word">When You will mark any question</h6>
+        </div>
+        <div class="two">
+            <div class="col2"></div>
+            <h6 class="word1">When you will only visit to any queston</h6>
+        </div>
+        <div class="three">
+            <div class="col3"></div>
+            <h6 class="word2">When You will visit and answer any question</h6>
+        </div>
+      </div>
+      <h5 class="text-center  dt">All the Best. Please select top-right buttons to access questions.</h5>
+  </div>
+  <!-- Starter Information -->
+
    <div class="container-fluid body my-2">
       <button class="btn btn-success submit" onclick="submit()" id="submitButton">Submit</button>
       <form id="mainform" name="mainform">
          <div class="container questions my-4" id="main">
             <span id="index" class="ques"></span>
-            <span class="ques" id="ques"></span><br>
+            <img src="" class="img" id="img"><span id="marks"></span>
+            <span class="ques" id="ques"></span><br><br>
             <input type="radio" name="aa" id="a" value="a"><span id="input1"></span><br>
             <input type="radio" name="aa" id="b" value="b"><span id="input2"></span><br>
             <input type="radio" name="aa" id="c" value="c"><span id="input3"></span><br>
@@ -41,10 +63,11 @@
       </form>
    </div>
 
-   <div class="container-fluid footer">
-      <button class="btn btn-primary" onclick="prev()">Prev</button>
-      <button class="btn btn-danger" onclick="mark()">Mark</button>
-      <button class="btn btn-primary" onclick="next()">Next</button>
+   <div id="allbuttons" class="container-fluid footer">
+      <button class="btn btn-primary" id="prevques" onclick="prev()">Prev</button>
+      <button class="btn btn-danger" id="mark" onclick="mark()">Mark</button>
+      <button class="btn btn-danger" id="unmark" onclick="unmark()">Unmark</button>
+      <button class="btn btn-primary" id="nextsubmit" onclick="next()">Next</button>
    </div>
 
    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
@@ -60,7 +83,26 @@
       let bt = document.getElementById('submitButton');
       bt.style.display = 'None'
       let ques = ''
-      console.log(v)
+      let img = document.getElementById('img')
+      let one = document.getElementById('a')
+      let two = document.getElementById('b')
+      let three = document.getElementById('c')
+      let four = document.getElementById('d')
+      let marks = document.getElementById('marks')
+      let front_show = document.getElementById('colourCodes')
+
+      if (v === 0) {
+         one.style.display = 'none'
+         two.style.display = 'none'
+         three.style.display = 'none'
+         four.style.display = 'none'
+         img.style.display = 'none'
+         marks.style.display = 'none'
+         front_show.style.display = 'inline'
+      }
+
+      if (document.getElementById('a').style.display == 'none')
+         document.getElementById('allbuttons').style.display = 'none'
 
       document.mainform.onclick = function () {
          let as = document.mainform.aa.value;
@@ -73,10 +115,15 @@
             },
             body: JSON.stringify({ 'index': `${v}`, 'option': `${as}` }),
          })
+
+         let x = document.getElementById(`${v}`);
+
          if (as === 'a' || as === 'b' || as === 'c' || as === 'd') {
-            let x = document.getElementById(`${v}`)
-            x.style.backgroundColor = 'blue'
-            x.style.color = 'white'
+            if (x.style.backgroundColor != 'red') {
+               let x = document.getElementById(`${v}`)
+               x.style.backgroundColor = 'blue'
+               x.style.color = 'white'
+            }
          }
       }
 
@@ -96,15 +143,36 @@
             btn.className = 'bttn';
 
             btn.onclick = function () {
+               document.getElementById('allbuttons').style.display = ''
+               front_show.style.display = 'none'
                v = parseInt(btn.value)
+               one.style.display = 'inline'
+               two.style.display = 'inline'
+
                if (v === i) {
-                  let bt = document.getElementById('submitButton')
+                  let bt = document.getElementById('nextsubmit')
+                  bt.innerText = "Submit"
                   bt.style.display = 'block'
                }
                else {
-                  let bt = document.getElementById('submitButton')
-                  bt.style.display = 'None'
+                  let bt = document.getElementById('nextsubmit')
+                  bt.innerText = "Next"
+                  bt.style.display = 'block'
                }
+
+               let x = document.getElementById(`${v}`)
+               let mark = document.getElementById('mark')
+               let unmark = document.getElementById('unmark')
+
+               if (x.style.backgroundColor === 'red') {
+                  mark.style.display = 'none'
+                  unmark.style.display = 'block'
+               }
+               else {
+                  mark.style.display = 'block'
+                  unmark.style.display = 'none'
+               }
+
                fetch(`${base_url}/api/{{ request.user }}/`, {
                   method: 'POST',
                   headers: {
@@ -117,18 +185,52 @@
                   .then(r => r.json())
                   .then(r => {
                      let o = JSON.parse(r)
-                     console.log(o.selected_option)
-                     document.getElementById('ques').innerText = o.ques
-                     document.getElementById('input1').innerText = ' ' + o.opt1
-                     document.getElementById('input2').innerText = ' ' + o.opt2
-                     document.getElementById('input3').innerText = ' ' + o.opt3
-                     document.getElementById('input4').innerText = ' ' + o.opt4
+
+                     if (o.ques_type === 'Image') {
+                        img.style.display = 'block'
+                        let q = document.getElementById('ques')
+                        q.style.display = 'none'
+                        let c = document.getElementById('c')
+                        let d = document.getElementById('d')
+                        c.style.display = 'inline'
+                        d.style.display = 'inline'
+                        marks.innerText = `(marks: ${o.marks})`
+                        marks.style.display = 'inline'
+                        img.src = `${base_url}/media/images/${o.image_name}`
+                     }
+                     else if (o.ques_type === 'Boolean') {
+                        let q = document.getElementById('ques')
+                        q.style.display = 'inline'
+                        document.getElementById('ques').innerHTML = o.ques
+                        let c = document.getElementById('c')
+                        let d = document.getElementById('d')
+                        c.style.display = 'none'
+                        d.style.display = 'none'
+                        img.style.display = 'none'
+                        marks.style.display = 'none'
+                     }
+                     else {
+                        document.getElementById('ques').innerHTML = o.ques
+                        img.src = ''
+                        let q = document.getElementById('ques')
+                        q.style.display = 'inline'
+                        img.style.display = 'none'
+                        let c = document.getElementById('c')
+                        let d = document.getElementById('d')
+                        c.style.display = 'inline'
+                        d.style.display = 'inline'
+                        marks.style.display = 'none'
+                     }
+
+                     document.getElementById('input1').innerHTML = ' ' + o.opt1
+                     document.getElementById('input2').innerHTML = ' ' + o.opt2
+                     document.getElementById('input3').innerHTML = ' ' + o.opt3
+                     document.getElementById('input4').innerHTML = ' ' + o.opt4
                      if (o.selected_option !== 'None') {
-                        console.log("JHII")
                         document.getElementById(`${o.selected_option}`).checked = true;
                      }
                      else {
-                        document.querySelector('input[type=radio][name=aa]:checked').checked = false
+                        document.querySelector('input[type=radio][name=aa]:checked').checked = false;
                      }
                   }).catch((error) => {
                      console.error('Error:', error);
@@ -144,7 +246,7 @@
       function colo() {
          if (v > 0) {
             let x = document.getElementById(`${v}`)
-            if (x.style.backgroundColor != 'blue') {
+            if (x.style.backgroundColor != 'blue' && x.style.backgroundColor != 'red') {
                x.style.backgroundColor = 'green'
                x.style.color = 'white'
             }
@@ -158,9 +260,8 @@
 
       function submit() {
          let rtr = confirm("Are you sure to submit your whole exam paper?");
-         if (rtr === false) {
-            e.preventDefault()
-         }
+         if (rtr === false) e.preventDefault()
+
          fetch(`${base_url}/exam-credential/auth-user/exam/{{ request.user }}/`, {
             method: 'POST',
             headers: {
@@ -176,21 +277,56 @@
       function next() {
          if (v === 0 || v > 0) {
             v += 1;
+            let x = document.getElementById(`${v}`);
+
+            if (x != null) {
+               let mark = document.getElementById('mark')
+               let unmark = document.getElementById('unmark')
+
+               if (x.style.backgroundColor === 'red') {
+                  mark.style.display = 'none'
+                  unmark.style.display = 'block'
+               }
+               else {
+                  mark.style.display = 'block'
+                  unmark.style.display = 'none'
+               }
+            }
+
+            if (v > i) {
+               if (confirm("Are you sure to submit your whole exam paper? (press ok to confirm submission)")) {
+                  fetch(`${base_url}/exam-credential/auth-user/exam/{{ request.user }}/`, {
+                     method: 'POST',
+                     headers: {
+                        'X-CSRFToken': '{{ csrf_token }}',
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                     },
+                     body: JSON.stringify({ 'msg': 'True' }),
+                  })
+                  location.replace(`${base_url}/exam-status/{{ request.user }}`);
+               }
+               v = i;
+               e.preventDefault();
+            }
+
             if (v === i) {
-               let bt = document.getElementById('submitButton')
+               let bt = document.getElementById('nextsubmit')
+               bt.innerText = "Submit"
                bt.style.display = 'block'
             }
             else {
-               let bt = document.getElementById('submitButton')
-               bt.style.display = 'None'
-            }
-            if (v > i) {
-               alert('No questions left, You can submit')
-               v = i;
+               let bt = document.getElementById('nextsubmit')
+               bt.innerText = "Next"
+               bt.style.display = 'block'
             }
          }
 
          colo();
+
+         one.style.display = 'inline'
+         two.style.display = 'inline'
+         front_show.style.display = 'none'
 
          fetch(`${base_url}/api/{{ request.user }}/`, {
             method: 'POST',
@@ -204,18 +340,51 @@
             .then(r => r.json())
             .then(r => {
                let o = JSON.parse(r)
-               console.log(o)
-               document.getElementById('ques').innerText = o.ques
-               document.getElementById('input1').innerText = o.opt1
-               document.getElementById('input2').innerText = o.opt2
-               document.getElementById('input3').innerText = o.opt3
-               document.getElementById('input4').innerText = o.opt4
+
+               if (o.ques_type === 'Image') {
+                  img.style.display = 'block'
+                  let q = document.getElementById('ques')
+                  q.style.display = 'none'
+                  let c = document.getElementById('c')
+                  let d = document.getElementById('d')
+                  c.style.display = 'inline'
+                  d.style.display = 'inline'
+                  marks.innerText = `(marks: ${o.marks})`
+                  marks.style.display = 'inline'
+                  img.src = `${base_url}/media/images/${o.image_name}`
+               }
+               else if (o.ques_type === 'Boolean') {
+                  let q = document.getElementById('ques')
+                  q.style.display = 'inline'
+                  document.getElementById('ques').innerHTML = o.ques
+                  let c = document.getElementById('c')
+                  let d = document.getElementById('d')
+                  c.style.display = 'none'
+                  d.style.display = 'none'
+                  img.style.display = 'none'
+                  marks.style.display = 'none'
+               }
+               else {
+                  document.getElementById('ques').innerHTML = o.ques
+                  img.src = ''
+                  let q = document.getElementById('ques')
+                  q.style.display = 'inline'
+                  img.style.display = 'none'
+                  let c = document.getElementById('c')
+                  let d = document.getElementById('d')
+                  c.style.display = 'inline'
+                  d.style.display = 'inline'
+                  marks.style.display = 'none'
+               }
+
+               document.getElementById('input1').innerHTML = ' ' + o.opt1
+               document.getElementById('input2').innerHTML = ' ' + o.opt2
+               document.getElementById('input3').innerHTML = ' ' + o.opt3
+               document.getElementById('input4').innerHTML = ' ' + o.opt4
                if (o.selected_option !== 'None') {
-                  console.log('u')
                   document.getElementById(`${o.selected_option}`).checked = true;
                }
                else {
-                  console.log('ut')
                   document.querySelector('input[type=radio][name=aa]:checked').checked = false
                }
             }).catch((error) => {
@@ -227,15 +396,38 @@
       function prev() {
          if (v > 1 && v <= i) {
             v -= 1;
+
+            let x = document.getElementById(`${v}`)
+            let mark = document.getElementById('mark')
+            let unmark = document.getElementById('unmark')
+
+            if (x.style.backgroundColor === 'red') {
+               mark.style.display = 'none'
+               unmark.style.display = 'block'
+            }
+            else {
+               mark.style.display = 'block'
+               unmark.style.display = 'none'
+            }
+
             if (v === i) {
-               let bt = document.getElementById('submitButton')
+               let bt = document.getElementById('nextsubmit')
+               bt.innerText = "Submit"
                bt.style.display = 'block'
             }
             else {
-               let bt = document.getElementById('submitButton')
-               bt.style.display = 'None'
+               let bt = document.getElementById('nextsubmit')
+               bt.innerText = "Next"
+               bt.style.display = 'block'
             }
          }
+
+         colo();
+
+         one.style.display = 'inline'
+         two.style.display = 'inline'
+         front_show.style.display = 'none'
+
          fetch(`${base_url}/api/{{ request.user }}/`, {
             method: 'POST',
             headers: {
@@ -249,17 +441,50 @@
             .then(r => {
                let o = JSON.parse(r)
 
-               document.getElementById('ques').innerText = o.ques
-               document.getElementById('input1').innerText = o.opt1
-               document.getElementById('input2').innerText = o.opt2
-               document.getElementById('input3').innerText = o.opt3
-               document.getElementById('input4').innerText = o.opt4
+               if (o.ques_type === 'Image') {
+                  img.style.display = 'block'
+                  let q = document.getElementById('ques')
+                  q.style.display = 'none'
+                  let c = document.getElementById('c')
+                  let d = document.getElementById('d')
+                  c.style.display = 'inline'
+                  d.style.display = 'inline'
+                  marks.innerText = `(marks: ${o.marks})`
+                  marks.style.display = 'inline'
+                  img.src = `${base_url}/media/images/${o.image_name}`
+               }
+               else if (o.ques_type === 'Boolean') {
+                  let q = document.getElementById('ques')
+                  q.style.display = 'inline'
+                  document.getElementById('ques').innerHTML = o.ques
+                  let c = document.getElementById('c')
+                  let d = document.getElementById('d')
+                  c.style.display = 'none'
+                  d.style.display = 'none'
+                  img.style.display = 'none'
+                  marks.style.display = 'none'
+               }
+               else {
+                  document.getElementById('ques').innerHTML = o.ques
+                  img.src = ''
+                  let q = document.getElementById('ques')
+                  q.style.display = 'inline'
+                  img.style.display = 'none'
+                  let c = document.getElementById('c')
+                  let d = document.getElementById('d')
+                  c.style.display = 'inline'
+                  d.style.display = 'inline'
+                  marks.style.display = 'none'
+               }
+
+               document.getElementById('input1').innerHTML = ' ' + o.opt1
+               document.getElementById('input2').innerHTML = ' ' + o.opt2
+               document.getElementById('input3').innerHTML = ' ' + o.opt3
+               document.getElementById('input4').innerHTML = ' ' + o.opt4
                if (o.selected_option !== 'None') {
-                  console.log('u')
                   document.getElementById(`${o.selected_option}`).checked = true;
                }
                else {
-                  console.log('ut')
                   document.querySelector('input[type=radio][name=aa]:checked').checked = false
                }
             }).catch((error) => {
@@ -273,7 +498,42 @@
             let x = document.getElementById(`${v}`)
             x.style.backgroundColor = 'red';
             x.style.color = 'white'
+
+            let mark = document.getElementById('mark')
+            let unmark = document.getElementById('unmark')
+            mark.style.display = 'none'
+            unmark.style.display = 'block'
          }
+      }
+
+      function unmark() {
+         let x = document.getElementById(`${v}`);
+         if (x.style.backgroundColor === 'red') {
+            fetch(`${base_url}/api/{{ request.user }}/`, {
+               method: 'POST',
+               headers: {
+                  "X-CSRFToken": '{{ csrf_token }}',
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json',
+               },
+               body: JSON.stringify({ 'index': `${v}` }),
+            })
+               .then(r => r.json())
+               .then(r => {
+                  let o = JSON.parse(r);
+                  if (o.selected_option !== 'None') {
+                     x.style.backgroundColor='blue'
+                  }
+                  else {
+                     x.style.backgroundColor='green'
+                  }
+               })
+         }
+
+         let mark = document.getElementById('mark')
+         let unmark = document.getElementById('unmark')
+         mark.style.display = 'block'
+         unmark.style.display = 'none'
       }
 
       function clock() {
@@ -301,7 +561,7 @@
             }
 
             if (c == 0) {
-               alert("Your Exam is Over!");
+               alert("Time of your examination is over.");
                clearInterval(myTimer);
                fetch(`${base_url}/exam-credential/auth-user/exam/{{ request.user }}/`, {
                   method: 'POST',
@@ -319,12 +579,13 @@
    </script>
    {% else %}
    <div class="container my-4">
-      <div class="jumbotron">
-         <h1 class="display-4">Remaining Time Is: {{ dictt.remaining_days }}</h1>
+      <div class="jumbotron py-4">
+         <h1 class="display-4">Exam starts in {{ dictt.remaining_days }}</h1>
          <p class="lead">We are here to show the time remaining for your exam. So be ready and prepare.</p>
          <hr class="my-4">
          <h5>Your Exam will start at {{ dictt.start_time }} on {{ dictt.start_date }}</h5>
          <p>Take preparation for your exam and Best Of Luck for your exam.</p>
+         <h4 id="timer2" class="display-7 time" style="font-family: cascadia code; font-style: italic;"></h4>
       </div>
       <a class="btn btn-warning" href="/" role="button">Go To Home</a>
    </div>
@@ -355,6 +616,7 @@
       function remain() {
          let newdate = rdate - date;
          let newmonth = rmonth - month;
+
          if (month === rmonth) {
             let total = newdate + ' days';
             x.innerHTML = total;
@@ -367,5 +629,40 @@
    </script>
    {% endif %}
 </body>
+
+<script>
+   clock2();
+   function clock2() {
+      var c = {{ dictt.exam_timer }};
+      let myTimer = setInterval(myClock2, 1000);
+
+      function myClock2() {
+         --c;
+         var seconds = c % 60;
+         var secondsInMinutes = (c - seconds) / 60;
+         var minutes = secondsInMinutes % 60;
+         var hours = (secondsInMinutes - minutes) / 60;
+
+         timer2.innerHTML = `Remaining time is ${hours}<sup>hr</sup>:${minutes}<sup>min</sup>:${seconds}<sup>sec</sup>`
+         // if (seconds === 55) {
+         //    fetch(`${base_url}/exam-credential/auth-user/exam/{{ request.user }}/`, {
+         //       method: 'POST',
+         //       headers: {
+         //          'X-CSRFToken': '{{ csrf_token }}',
+         //          'Accept': 'application/json',
+         //          'Content-Type': 'application/json',
+         //       },
+         //       body: JSON.stringify({ 'msg': 'True', 'type': 'time', 'status': 'online', 'user': 'student' }),
+         //    })
+         // }
+
+         if (c == 0) {
+            alert("Exam starts! Press OK to reload the page (Good Luck!)");
+            clearInterval(myTimer);
+            document.location.reload(true);
+         }
+      }
+   }
+</script>
 
 </html>

@@ -5,128 +5,144 @@
 {% block body %}
 
 {% if ahead_of_time %}
-	<center><h2>OOPs!!! Registration process is not started yet...</h2></center>
+<center>
+    <h2>OOPs!!! Registration process is not started yet...</h2>
+</center>
 {% elif date_over %}
-	<center><h2>Sorry... Registration Date is Expired!!!</h2></center>
+<center>
+    <h2>Sorry... Registration Date is Expired!!!</h2>
+</center>
 {% else %}
-	<div class="container py-4 px-5 my-4">
-		{% for message in messages %}
-			<div class="alert alert-success {% if message.tags == 'error' %} alert-danger {% endif %}" role="alert">
-				<strong>Message: </strong> {{ message }}
-				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-			</div>
-		{% endfor %}
-		<form method="POST" action="/register/" name="form1">
-			{% csrf_token %}
-			<div class="mb-3">
-				<label for="name" class="form-label">First Name</label>
-				<input type="text" class="form-control" id="fname" name="fname" placeholder="First name" required="required">
-			</div>
-			<div class="mb-3">
-				<label for="name" class="form-label">Last Name</label>
-				<input type="text" class="form-control" id="lname" name="lname" placeholder="Last name" required="required">
-			</div>
-			<div class="mb-3">
-				<label for="name" class="form-label">Gurdian's Name</label>
-				<input type="text" class="form-control" id="gurdian" name="gurdian" placeholder="Gurdian's Name"
-					required="required">
-			</div>
-			<div class="mb-3">
-				<label for="name" class="form-label">Date Of Birth (DD-MM-YYYY)</label>
-				<div class="row">
-					<div class="col">
-						<input type="text" class="form-control" placeholder="Date (dd)" aria-label="Last name" id="date" name="date"
-							required="required">
-					</div>
-					<div class="col">
-						<input type="text" class="form-control" placeholder="Month (mm)" aria-label="Last name" id="month"
-							name="month" required="required">
-					</div>
-					<div class="col">
-						<input type="text" class="form-control" placeholder="Year (yyyy)" aria-label="First name" id="year" name="year"
-							required="required">
-					</div>
-				</div>
-			</div>
-			<div class="mb-3">
-				<label for="name" class="form-label">Phone Number</label>
-				<div class="row">
-					<div class="col">
-						<input type="text" id="phone" data-fv-numeric-message="Please enter valid phone numbers"
-							data-fv-phone-country11="IN" required="required"
-							data-fv-notempty-message="This field cannot be left blank." placeholder="Contact Number"
-							class="form-control" name="phone">
-					</div>
-					<div class="col">
-						<input type="text" id="whatsapp" data-fv-numeric-message="Please enter valid phone numbers"
-							data-fv-phone-country11="IN" required="required"
-							data-fv-notempty-message="This field cannot be left blank." placeholder="Whatsapp Number"
-							class="form-control" name="whatsapp">
-					</div>
-				</div>
-			</div>
-			<div class="mb-3">
-				<label for="email" class="form-label">Email address</label>
-				<input type="email" class="form-control" id="email" name="email" placeholder="Email Address"
-					required="required">
-				<small class="form-text text-muted">We'll never share your email with anyone else</small>
-			</div>
-			<div class="mb-3">
-				<label for="name" class="form-label">Residential Address</label>
-				<input type="text" class="form-control" id="address" name="address" placeholder="Enter Your Permanent Address"
-					required="required">
-			</div>
-			<div class="mb-3">
-				<label for="name" class="form-label">Name of the Institution</label>
-				<input type="text" class="form-control" id="inst" name="inst" placeholder="School / College Name"
-					required="required">
-			</div>
-			<div class="mb-3">
-				<label for="name" class="form-label">Status of Higher Secondery Education</label>
-				<select name="status" id="status" required="required">
-					<option value="None">Choose</option>
+<div class="container py-4 px-5 my-4">
+    {% for message in messages %}
+    <div class="alert alert-success {% if message.tags == 'error' %} alert-danger {% endif %}" role="alert">
+        <strong>Message: </strong> {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
 
-					<option value="Appearing">Appearing</option>
-					<option value="Passed">Passed</option>
-				</select>
-			</div>
-			<div class="mb-3">
-				<label for="name" class="form-label">Select Your Examination board</label>
-				<select name="board" id="board" required="required">
-					<option value="None">Choose</option>
-
-					<option value="ISC">ISC</option>
-					<option value="WBCHSE">WBCHSE</option>
-					<option value="CBSE">CBSE</option>
-					<option value="others">Others</option>
-				</select>
-			</div>
-			<div class="mb-3">
-				<label for="name" class="form-label">Are you appearing / appeared in WBJEE / JEE MAINS</label>
-				<select name="entrance" id="entrance" required="required">
-					<option value="None">Choose</option>
-
-					<option value="yes">Yes</option>
-					<option value="no">No</option>
-				</select>
-			</div>
-			<button type="submit" class="btn btn-primary" value="register" onclick="checkEmail(document.form1.email)">Submit</button>
-		</form>
-	</div>
+    <form method="POST" action="/register/" name="form1">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="fname" class="form-label">Full Name</label>
+            <input type="text" class="form-control" id="fname" name="fname" placeholder="Full Name" required="required">
+        </div>
+        <div class="mb-3">
+            <label for="gurdian" class="form-label">Gurdian's Name</label>
+            <input type="text" class="form-control" id="gurdian" name="gurdian" placeholder="Gurdian's Name" required="required">
+        </div>
+        <div class="mb-3">
+            <label for="" class="form-label">Date Of Birth (DD-MM-YYYY)</label>
+            <div class="row">
+                <div class="col">
+                    <input type="number" class="form-control" placeholder="Date (dd)" aria-label="date" id="date"
+                        name="date" required="required">
+                </div>
+                <div class="col">
+                    <input type="number" class="form-control" placeholder="Month (mm)" aria-label="month" id="month"
+                        name="month" required="required">
+                </div>
+                <div class="col">
+                    <input type="number" class="form-control" placeholder="Year (yyyy)" aria-label="year" id="year"
+                        name="year" required="required">
+                </div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="" class="form-label">Phone Number</label>
+            <div class="row">
+                <div class="col">
+                    <input type="number" id="phone" data-fv-numeric-message="Please enter valid phone numbers"
+                        data-fv-phone-country11="IN" required="required"
+                        data-fv-notempty-message="This field cannot be left blank." placeholder="Contact Number"
+                        class="form-control" name="phone">
+                </div>
+                <div class="col">
+                    <input type="number" id="whatsapp" data-fv-numeric-message="Please enter valid phone numbers"
+                        data-fv-phone-country11="IN" required="required"
+                        data-fv-notempty-message="This field cannot be left blank." placeholder="Whatsapp Number"
+                        class="form-control" name="whatsapp">
+                </div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email address</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="Email Address"
+                required="required">
+            <small class="form-text text-muted">We'll never share your email with anyone else</small>
+        </div>
+        <div class="mb-3">
+            <label for="address" class="form-label">Residential Address</label>
+            <input type="text" class="form-control" id="address" name="address"
+                placeholder="Enter Your Permanent Address" required="required">
+        </div>
+        <div class="mb-3">
+            <label for="inst" class="form-label">Name of the Institution</label>
+            <input type="text" class="form-control" id="inst" name="inst" placeholder="Name of the School / College"
+                required="required">
+        </div>
+        <div class="mb-3">
+            <label for="passyear" class="form-label">Year of Passing (10 + 2)</label>
+            <input type="number" class="form-control" id="passyear" name="passyear" placeholder="Year of Passing" required>
+        </div>
+        <div class="mb-3">
+            <label for="gender" class="form-label">Select Your Gender</label>
+            <select name="gender" id="gender" required>
+                <option value="None">Choose</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="combo" class="form-label">Subject combination (Physics + Chemistry + Mathematics)</label>
+            <select name="combo" id="combo" required="required">
+                <option value="None">Choose</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+        </div>
+        <div class="mb-3">
+			<label for="board" class="form-label">Select Your Examination Board</label>
+			<select name="board" id="board" onchange="changeFunc(value);">
+				<option value="None">Choose</option>
+				<option value="BSEB">BSEB</option>
+				<option value="CBSE">CBSE</option>
+				<option value="ISC">ISC</option>
+				<option value="WBBSE">WBBSE</option>
+				<option value="WBCHSE">WBCHSE</option>
+				<option value="WEBSCTE">WEBSCTE</option>
+				<option value="Other">Other</option>
+			</select>
+        </div>
+		<div id="hidecode" class="mb-3" style="display: none;">
+            <label for="otherboard" class="form-label">Specify Your Examination Board</label>
+            <input type="text" class="form-control" id="otherboard" name="otherboard" placeholder="Board Name">
+        </div>
+        <div class="mb-3">
+            <label for="entrance" class="form-label">Are you appearing / appeared in WBJEE / JEE MAINS</label>
+            <select name="entrance" id="entrance" required="required">
+                <option value="None">Choose</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="stream" class="form-label">Name Your Preferred Stream</label>
+            <input type="text" class="form-control" id="stream" name="stream" placeholder="Your Preferred Stream" required>
+        </div>
+        <button type="submit" id="btnsubmit" class="btn btn-primary" value="register">Submit</button>
+    </form>
+</div>
 {% endif %}
 
 <script>
-	function checkEmail(inputText) {
-		var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-		if(inputText.value.match(mailformat)) {
-			document.form1.email.focus();
-			return true;
+	function changeFunc(value) {
+		if (value == "Other") {
+			document.getElementById("hidecode").style.display = "block";
 		}
-
-		else {
-			alert("You have entered an invalid email address!");
-			document.form1.email.focus();
-			return false;
+        else {
+			document.getElementById("hidecode").style.display = "none";
 		}
 	}
 </script>

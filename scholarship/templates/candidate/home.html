@@ -18,6 +18,9 @@
 			{% endif %}
 		{% else %}
 			<h5 class="text-center my-1">Welcome {{ request.user.first_name }} {{ request.user.last_name }} {% if request.user.is_superuser %} (Administrator) {% endif %}</h5>
+			{% if not request.user.is_superuser %}
+				<a href="/exam-credential" target="_blank"><button class="btn btn-warning my-2">Click Here For Exam</button></a>
+			{% endif %}
 		{% endif %}
 	</div>
 </div>

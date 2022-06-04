@@ -14,16 +14,11 @@
             <tr>
                <th>User ID</th>
                <th>Full Name</th>
-               <th>Guirdian</th>
-               <th>Date of Birth (DD/MM/YYYY)</th>
-               <th>Contact Number</th>
-               <th>WhatsApp Number</th>
+               <th>DOB</th>
+               <th>Contact</th>
                <th>Email</th>
-               <th>Residential Address</th>
-               <th>Name of School / College</th>
-               <th>10 + 2 passed / appearing</th>
-               <th>Examination Board</th>
-               <th>WBJEE / JEE MAINS</th>
+               <th>School / College</th>
+               <th>Last Seen (Exam)</th>
                <th>Obtained Marks</th>
             </tr>
          </thead>
@@ -40,17 +35,12 @@
          `
          <tr>
             <td>${values['user_id']}</td>
-            <td>${values['first_name'][0]['first_name']} ${values['last_name'][0]['last_name']}</td>
-            <td>${values['gurdian_name'][0]['gurdian_name']}</td>
+            <td>${values['full_name'][0]['full_name']}</td>
             <td>${values['date_of_birth'][0]['date_of_birth']}</td>
             <td>${values['contact'][0]['contact']} </td>
-            <td>${values['whatsapp'][0]['whatsapp']}</td>
             <td>${values['email'][0]['email']}</td>
-            <td>${values['address'][0]['address']}</td>
             <td>${values['institute_name'][0]['school_college_name']}</td>
-            <td>${values['appearing_passed_12'][0]['appearing_passed_12']}</td>
-            <td>${values['board_name'][0]['board_name']}</td>
-            <td>${values['appeared_wbjee_jeeMain'][0]['appeared_wbjee_jeeMain']}</td>
+            <td>${values['last_seen'][0]['last_seen']}</td>
             <td>${values['total_marks'][0]['total_marks']}</td>
          </tr>
          `

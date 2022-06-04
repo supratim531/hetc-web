@@ -14,36 +14,36 @@
    <h2 class="text-center my-3">Set Exam Schedule</h2>
    <form action="" method="POST" enctype="multipart/form-data">
       {% csrf_token %}
-      <div class="mb-3">
-         <label for="name" class="form-label">Total Number Of Questions For Exam</label>
-         <input type="number" class="form-control" id="fname" name="quesno"
-         placeholder="Number Of Questions">
+      <div class="form-group">
+         <div class="mb-3">
+            <label for="name" class="form-label">Registration start date</label>
+            <input type="date" class="form-control" id="fname" name="regstartdate">
+         </div>
+         <div class="mb-3">
+            <label for="name" class="form-label">Registration last date</label>
+            <input type="date" class="form-control" id="fname" name="reglastdate">
+         </div>
+         <div class="mb-3">
+            <label for="name" class="form-label">Exam Date</label>
+            <input type="date" class="form-control" id="fname" name="examdate">
+         </div>
+         <div class="mb-3">
+            <label for="name" class="form-label">Exam Start Time</label>
+            <input type="time" class="form-control" id="fname" name="examstart">
+         </div>
+         <div class="mb-3">
+            <label for="name" class="form-label">Exam End Time</label>
+            <input type="time" class="form-control" id="fname" name="examend">
+         </div>
+         <div class="mb-3">
+            <label for="formFile" class="form-label">Upload PDF (name must be <b>rules.pdf</b>)</label>
+            <input class="form-control" type="file" id="formFile" name="pdf">
+         </div>
       </div>
-      <div class="mb-3">
-         <label for="name" class="form-label">Registration start date</label>
-         <input type="date" class="form-control" id="fname" name="regstartdate">
+      <div class="form-group">
+         <button type="submit" class="btn btn-primary" value="register">Submit</button>
+         <button type="reset" class="btn btn-primary float-end" value="clear">Reset</button>
       </div>
-      <div class="mb-3">
-         <label for="name" class="form-label">Registration last date</label>
-         <input type="date" class="form-control" id="fname" name="reglastdate">
-      </div>
-      <div class="mb-3">
-         <label for="name" class="form-label">Exam Date</label>
-         <input type="date" class="form-control" id="fname" name="examdate">
-      </div>
-      <div class="mb-3">
-         <label for="name" class="form-label">Exam Start Time</label>
-         <input type="time" class="form-control" id="fname" name="examstart">
-      </div>
-      <div class="mb-3">
-         <label for="name" class="form-label">Exam End Time</label>
-         <input type="time" class="form-control" id="fname" name="examend">
-      </div>
-      <div class="mb-3">
-         <label for="formFile" class="form-label">Upload PDF (name must be <b>rules.pdf</b>)</label>
-         <input class="form-control" type="file" id="formFile" name="pdf">
-      </div>
-      <button type="submit" class="btn btn-primary" value="register">Submit</button>
    </form>
 </div>
 

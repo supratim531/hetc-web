@@ -9,9 +9,11 @@ from django.contrib.auth.models import User
 
 def user_id(username):
     while True:
-        user_id = str(username).upper() + str(random.randint(1875, 9370))
+        user_id = str(username) + str(random.randint(1875, 9370))
+
         if User.objects.filter(username=user_id):
             continue
+
         else:
             return user_id
 
@@ -20,6 +22,7 @@ def user_password(date, month, year):
 
     if len(dd) == 1:
         dd = '0' + dd
+
     if len(mm) == 1:
         mm = '0' + mm
 
@@ -58,7 +61,8 @@ def verified(string, hashed_string):
 def last_seen():
     c_hour = datetime.datetime.now().strftime("%H")
     c_minute = datetime.datetime.now().strftime("%M")
-    return str(c_hour) + ':' + str(c_minute)
+    last_seen_in_exam = str(c_hour) + ':' + str(c_minute)
+    return last_seen_in_exam
 
 def is_exam_running(Details):
     ob = Details.objects.first()
@@ -90,9 +94,12 @@ def time_ahead(Details):
     else:
         return False
 
-def record_is_duplicate(fname, lname, gurdian, email):
+def record_is_duplicate(fullname, gurdian, email):
     if Student.objects.filter(gurdian_name=gurdian):
-        if Student.objects.filter(first_name=fname) and Student.objects.filter(last_name=lname):
+        student_ob = Student.objects.filter(gurdian_name=gurdian)
+        student_fullname = student_ob.values('full_name').get()['full_name']
+
+        if student_fullname == fullname:
             return True
 
     if Student.objects.filter(email=email):
@@ -106,11 +113,6 @@ def timer(Details):
     curr_time = datetime.datetime.combine(datetime.date(1, 1, 1), datetime.datetime.now().time())
     return (end_time - curr_time).seconds
 
-def handle_upload_file(file):
-    with open(f'./media/{file.name}', "wb+") as fPtr:
-        for chunk in file.chunks():
-            fPtr.write(chunk)
-
 def add_days(days):
     tdelta = datetime.timedelta(days=days)
     return tdelta
@@ -118,9 +120,9 @@ def add_days(days):
 def init_schedule(Details):
     try:
         if Details.objects.count() == 0:
-            reg_start_date = datetime.date.today() + add_days(1)
-            reg_last_date = datetime.date.today() + add_days(22)
-            exam_date = datetime.date.today() + add_days(24)
+            reg_start_date = datetime.date.today() + add_days(0)
+            reg_last_date = datetime.date.today() + add_days(1)
+            exam_date = datetime.date.today() + add_days(2)
             exam_start = datetime.time(11, 00, 0)
             exam_end = datetime.time(12, 00, 0)
 
@@ -132,7 +134,17 @@ def init_schedule(Details):
             print("supratim531: Exam Schedule Initialized\n")
         
         else:
-            print("supratim531: Exam Schedule already exists\n")
+            print("supratim531: Exam Schedule Already Exists\n")
     
     except:
         print("supratim531: Detail model does not exist\n")
+
+def handle_upload_file(file):
+    with open(f'./media/{file.name}', "wb+") as fPtr:
+        for chunk in file.chunks():
+            fPtr.write(chunk)
+
+def handle_image_question(file):
+    with open(f'./media/images/{file.name}', "wb+") as fPtr:
+        for chunk in file.chunks():
+            fPtr.write(chunk)
